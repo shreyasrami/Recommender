@@ -1,8 +1,9 @@
+from os import stat
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer, RecommendSerializer
+from .serializers import RegisterSerializer, LoginSerializer, RecommendSerializer, UserDetailsSerializer
 from django.contrib import auth
 from .models import User
 from rest_framework import permissions
@@ -57,17 +58,28 @@ class RecommendView(generics.GenericAPIView):
     def post(self,request,*args,**kwargs):
         serializer = RecommendSerializer(data=request.data)
         if serializer.is_valid():
-            access_token_str = request.headers.get('Authorization')
-            access_token_obj = RefreshToken(access_token_str)
-            user_id=access_token_obj['user_id']
-            user=User.objects.filter(id=user_id)
-            if user.exists():
-                experience = serializer.validated_data['experience']
-                fee = serializer.validated_data['fee']
-                city_name = serializer.validated_data['city_name']
-                recom_list = rankFilter(dataset, model, experience, fee, city_name, 10).iloc[:,1:10].to_dict('index')
-                return Response(recom_list,status=HTTP_200_OK)
-            else:
-                return Response({"status":"401_AUTHENTICATION_ERROR"})
+            experience = serializer.validated_data['experience']
+            fee = serializer.validated_data['fee']
+            city_name = serializer.validated_data['city_name']
+            recom_list = rankFilter(dataset, model, experience, fee, city_name, 10).iloc[:,1:10].to_dict('index')
+            return Response(recom_list,status=HTTP_200_OK)
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
+
+
+class UserDetailsView(generics.GenericAPIView):
+    serializer_class = UserDetailsSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self,request,*args,**kwargs):
+        if User.objects.filter(id=kwargs['user_id']):
+            usr = User.objects.get(id=kwargs['user_id'])
+            data = {
+                'user_id': usr.id,
+                'first_name': usr.fname,
+                'last_name': usr.lname,
+                'email': usr.email 
+            }
+            return Response(data,status=HTTP_200_OK)
+        else:
+            return Response(status=HTTP_404_NOT_FOUND)
