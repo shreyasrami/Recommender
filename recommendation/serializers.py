@@ -28,3 +28,8 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email', 'password']
+
+class RecommendSerializer(serializers.Serializer):
+    experience = serializers.IntegerField(max_value=100, min_value=0)
+    fee = serializers.IntegerField(min_value=0)
+    city_name = serializers.CharField(style={"input_type": "text"},write_only=True)
