@@ -1,7 +1,6 @@
-# Advisor-Network
+# Recommender System
 
-An Advisor Network where admin can add new advisors and users can view all the advisors. Users can also book calls with advisors on the desired time and can view details of all the calls booked by them.
-API endpoints created for all these functionalities.
+A Recommender System to recommend cancer hospitals to the patients using Machine Learning and Blockchain. 
 
 ## Installation Instructions
 
