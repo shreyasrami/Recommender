@@ -30,11 +30,5 @@ A Recommender System to recommend cancer hospitals to the patients using Machine
     ```
 
 ### Done!
-The local application will be available at <a href="http://localhost:8000" target="_blank">http://localhost:8000</a>.
 
-### Detailed API Documentation can be viewed at <a href="http://localhost:8000/docs/" target="_blank">http://localhost:8000/docs/</a>.
-
-## Contributing
-Pull requests are welcome. For major
-changes, please open an issue first 
-to discuss what you would like to change."# Recommender System API" 
+### Detailed API Documentation can be viewed at <a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a>.
