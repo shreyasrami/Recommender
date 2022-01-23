@@ -61,7 +61,7 @@ class RecommendView(generics.GenericAPIView):
             experience = serializer.validated_data['experience']
             fee = serializer.validated_data['fee']
             city_name = serializer.validated_data['city_name']
-            recom_list = rankFilter(dataset, model, experience, fee, city_name, 10).iloc[:,1:10].to_dict('index')
+            recom_list = rankFilter(dataset, model, experience, fee, city_name, 10).iloc[:,1:12].drop(['unrequired'],axis=1).to_dict('index')
             return Response(recom_list,status=HTTP_200_OK)
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
