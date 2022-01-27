@@ -26,15 +26,9 @@ def rankFilter(dataset, model, experience, fee, city_name, size):
             l.append(0.0)
     pred = np.array(l)
     rank = model.predict(pred.reshape(1,-1))
-    dataframe = pd.DataFrame()
-    for i in imrange(1,rank[0]+1):
-        id = contract.functions.ids(i).call()
-        entry = dataset.iloc[id,:]
-        dataframe.append(entry)
-        #entry = dataset.loc[dataset['Sr No.']==id]
-
-    #dataset = dataset.loc[dataset['Rank']<=rank[0]]
-    recs = dataframe.loc[dataset['city']==city_name]
+    tempDB = dataset.loc[dataset['Rank']<=rank[0]]
+    recs = tempDB.loc[tempDB['city']==city_name]
     if recs['Rank'].count() < size:
-        recs = recs.append(dataset.loc[dataset['city']!=city_name])
+        recs = recs.append(tempDB.loc[dataset['city']!=city_name])
+        recs = recs.append(dataset.loc[dataset['Rank']>rank[0]])
     return recs.iloc[:size,:]
