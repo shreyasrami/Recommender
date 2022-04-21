@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000', 'https://62613ad3d8391c494a26644e--golden-crepe-c71680.netlify.app/',
+    'http://localhost:3000', 'https://62613ad3d8391c494a26644e--golden-crepe-c71680.netlify.app',
 ]
 
 ROOT_URLCONF = 'recommender.urls'
