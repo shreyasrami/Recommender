@@ -31,4 +31,5 @@ def rankFilter(dataset, model, experience, fee, city_name, size):
     if recs['Rank'].count() < size:
         recs = recs.append(tempDB.loc[dataset['city']!=city_name])
         recs = recs.append(dataset.loc[dataset['Rank']>rank[0]])
+    
     return recs.iloc[:size,:]
