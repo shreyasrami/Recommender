@@ -43,7 +43,7 @@ def getDocsByIds(array):
 
 def getTopDocs(size):
     likesList = np.array([], dtype='int')
-    for i in range(0, 10):#len(dataset)
+    for i in range(0, len(dataset)):
         likes = contract.functions.numOfLikes(i).call()
         likesList = np.append(likesList, likes)
     likesList_enumerated = np.array(list(enumerate(likesList)))
