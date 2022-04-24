@@ -44,7 +44,12 @@ class LoginUserView(generics.GenericAPIView):
                 refresh = RefreshToken.for_user(user)
                 data = {
                     'token': str(refresh.access_token),
-                    'user_id':user.id
+                    'user_id':user.id,
+                    'email': user.email,
+                    'first_name': user.fname,
+                    'last_name': user.lname,
+                    'phone': user.phone,
+                    'city': user.city
                 }
                 return Response(data,status=HTTP_200_OK)
             else:                                                                                                    
