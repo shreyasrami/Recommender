@@ -73,3 +73,4 @@ web3==5.29.0
 websockets==9.1
 whitenoise==5.2.0
 yarl==1.7.2
+python-decouple==3.4
