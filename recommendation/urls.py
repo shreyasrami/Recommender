@@ -2,7 +2,7 @@ from django.urls import path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
-from .views import RegisterUserView, LoginUserView, GetAllHospitalsView, RecommendView, UserDetailsView, EditDetailsView
+from .views import RegisterUserView, LoginUserView, GetAllHospitalsView, TopDoctorsView, RecommendView, PastRecommendView, UserDetailsView, EditDetailsView
 
 
 schema_view = get_schema_view(
@@ -21,6 +21,8 @@ urlpatterns = [
     path('user/login/', LoginUserView.as_view(), name='token_obtain_pair'),
     path('user-details/<user_id>/', UserDetailsView.as_view(), name='user_details'),
     path('edit-details/', EditDetailsView.as_view(), name='edit_details'),
+    path('all-hospitals/', GetAllHospitalsView.as_view(), name='get_all_hospitals'),
+    path('get-top-docs/', TopDoctorsView.as_view(), name='get_top_doctors'),
     path('recom/', RecommendView.as_view(), name='recommendation'),
-    path('all-hospitals/', GetAllHospitalsView.as_view(), name='getallhospitals'),
+    path('past-recoms/', PastRecommendView.as_view(), name='past_recommendations'),
 ]

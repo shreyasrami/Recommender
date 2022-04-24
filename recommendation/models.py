@@ -74,4 +74,5 @@ class User(AbstractBaseUser):
 
 class PastRecommendations(models.Model):
     patient = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
     past_recom = ArrayField(models.IntegerField(), size=10)

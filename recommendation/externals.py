@@ -1,6 +1,8 @@
 from recommender.settings import BASE_DIR
 import numpy as np
 import joblib
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 import json
 from web3 import Web3
 
@@ -12,7 +14,8 @@ contract = web3.eth.contract(address=address, abi=abi)
 
 dataset = joblib.load(BASE_DIR / 'dataset.data')
 
-model = joblib.load(BASE_DIR / 'lr.model')
+def getAllHospitals():
+    return dataset["Hospital"].unique()
 
 combined_features = dataset["Experience"].astype('str') + " " + dataset["Fee"].astype('str') + " " + dataset["city"].astype('str')
 def recommend(experience, fee, city, size):
@@ -35,9 +38,6 @@ def recommend(experience, fee, city, size):
     tempDS2 = dataset.iloc[likesList_enumerated_sorted[:,0].astype('int'), :]
     return tempDS2.iloc[:size,:]
 
-def getAllHospitals():
-    return dataset["Hospital"].unique()
-
 def getDocsByIds(array):
     return dataset.iloc[array, :]
 
@@ -48,5 +48,5 @@ def getTopDocs(size):
         likesList = np.append(likesList, likes)
     likesList_enumerated = np.array(list(enumerate(likesList)))
     likesList_enumerated_sorted = np.array(sorted(likesList_enumerated, key = lambda x:x[1], reverse = True))
-    tempDS = dataset.iloc[likesList_enumerated_sorted[:,0].astype('int'), :]
+    tempDS = getDocsByIds(likesList_enumerated_sorted[:,0].astype('int'))
     return tempDS.iloc[:size,:]

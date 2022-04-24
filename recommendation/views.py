@@ -10,7 +10,7 @@ from .models import User,PastRecommendations
 from rest_framework import permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
-from .externals import getAllHospitals, recommend, getDocsByIds
+from .externals import getAllHospitals, recommend, getDocsByIds, getTopDocs
 
 # Create your views here.
 
@@ -58,18 +58,16 @@ class LoginUserView(generics.GenericAPIView):
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
 
-
-
-# usr = User.objects.get(email=request.user)
-# recom = list(temp['Sr No.'])
-# recom_ids = list(map(int, recom))
-# print(recom_ids)
-# PastRecommendations.objects.create(patient=usr,past_recom=recom_ids)
-
 class GetAllHospitalsView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         response = getAllHospitals()
         return Response(response,status=HTTP_200_OK)
+
+class TopDoctorsView(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        docs = getTopDocs(10)
+        docs_array = docs.iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
+        return Response(docs_array, status=HTTP_200_OK)
 
 class RecommendView(generics.GenericAPIView):
     serializer_class = RecommendSerializer
@@ -77,14 +75,30 @@ class RecommendView(generics.GenericAPIView):
     def post(self,request,*args,**kwargs):
         serializer = RecommendSerializer(data=request.data)
         if serializer.is_valid():
-            """ experience = serializer.validated_data['experience']
+            experience = serializer.validated_data['experience']
             fee = serializer.validated_data['fee']
             city_name = serializer.validated_data['city_name']
-            temp = rankFilter(dataset, model, experience, fee, city_name, 10)
-            recom_list = temp.iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records') """
-            return Response(status=HTTP_200_OK)
+            usr = User.objects.get(email=request.user)
+            recom = recommend(experience, fee, city_name, 10)
+            recom_ids = list(recom['id'])
+            #PastRecommendations.objects.create(patient=usr,past_recom=recom_ids)
+            recom_array = recom.iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
+            return Response(recom_array, status=HTTP_200_OK)
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
+
+class PastRecommendView(generics.GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self,request,*args,**kwargs):
+        res = []
+        usr = User.objects.get(email=request.user)
+        """ pr = PastRecommendations.objects.filter(patient=usr)
+        for i in pr:
+            temp = {"date": 1}
+            temp["date"] = i.date
+            temp["recom"] = getDocsByIds(i.past_recom).iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
+            res.append(temp) """
+        return Response(res, status=HTTP_200_OK)
 
 class UserDetailsView(generics.GenericAPIView):
     serializer_class = UserDetailsSerializer
