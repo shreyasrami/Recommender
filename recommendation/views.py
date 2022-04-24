@@ -92,12 +92,12 @@ class PastRecommendView(generics.GenericAPIView):
     def get(self,request,*args,**kwargs):
         res = []
         usr = User.objects.get(email=request.user)
-        """ pr = PastRecommendations.objects.filter(patient=usr)
+        pr = PastRecommendations.objects.filter(patient=usr)
         for i in pr:
             temp = {"date": 1}
             temp["date"] = i.date
             temp["recom"] = getDocsByIds(i.past_recom).iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
-            res.append(temp) """
+            res.append(temp)
         return Response(res, status=HTTP_200_OK)
 
 class UserDetailsView(generics.GenericAPIView):
