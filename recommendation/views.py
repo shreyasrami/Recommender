@@ -78,7 +78,7 @@ class RecommendView(generics.GenericAPIView):
         if serializer.is_valid():
             experience = serializer.validated_data['experience']
             fee = serializer.validated_data['fee']
-            city_name = serializer.validated_data['city_name']
+            city_name = str(serializer.validated_data['city_name']).capitalize()
             usr = User.objects.get(email=request.user)
             recom = recommend(experience, fee, city_name, 10)
             recom_ids = list(recom['id'])
