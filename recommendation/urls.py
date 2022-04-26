@@ -2,7 +2,7 @@ from django.urls import path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
-from .views import RegisterUserView, LoginUserView, GetAllHospitalsView, TopDoctorsView, RecommendView, PastRecommendView, UserDetailsView, EditDetailsView
+from .views import RegisterUserView, LoginUserView, GetAllHospitalsView, TopDoctorsView, RecommendView, PastRecommendView, GetDocByIdView, UserDetailsView, EditDetailsView
 
 
 schema_view = get_schema_view(
@@ -25,4 +25,5 @@ urlpatterns = [
     path('get-top-docs/', TopDoctorsView.as_view(), name='get_top_doctors'),
     path('recom/', RecommendView.as_view(), name='recommendation'),
     path('past-recoms/', PastRecommendView.as_view(), name='past_recommendations'),
+    path('get-doc-by-id/', GetDocByIdView.as_view(), name='get_doc_by_id'),
 ]

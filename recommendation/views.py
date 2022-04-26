@@ -4,7 +4,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer, RecommendSerializer, UserDetailsSerializer, EditDetailsSerializer
+from .serializers import RegisterSerializer, LoginSerializer, RecommendSerializer, GetDocByIdSerializer, UserDetailsSerializer, EditDetailsSerializer
 from django.contrib import auth
 from .models import User,PastRecommendations
 from rest_framework import permissions
@@ -82,7 +82,7 @@ class RecommendView(generics.GenericAPIView):
             usr = User.objects.get(email=request.user)
             recom = recommend(experience, fee, city_name, 10)
             recom_ids = list(recom['id'])
-            PastRecommendations.objects.create(patient=usr,past_recom=recom_ids)
+            #PastRecommendations.objects.create(patient=usr,past_recom=recom_ids)
             recom_array = recom.iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
             return Response(recom_array, status=HTTP_200_OK)
         else:
@@ -100,6 +100,17 @@ class PastRecommendView(generics.GenericAPIView):
             temp["recom"] = getDocsByIds(i.past_recom).iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
             res.append(temp)
         return Response(res, status=HTTP_200_OK)
+
+class GetDocByIdView(generics.GenericAPIView):
+    queryset = ''
+    def get(self, request, *args, **kwargs):
+        serializer = GetDocByIdSerializer(data=request.data)
+        if serializer.is_valid():
+            ids = serializer.validated_data['ids']
+            getDocsByIds(i.past_recom).iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
+            return Response(recom_array, status=HTTP_200_OK)
+        else:
+            return Response(status=HTTP_400_BAD_REQUEST)
 
 class UserDetailsView(generics.GenericAPIView):
     serializer_class = UserDetailsSerializer

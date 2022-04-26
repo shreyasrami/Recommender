@@ -36,6 +36,8 @@ class RecommendSerializer(serializers.Serializer):
     fee = serializers.IntegerField(min_value=0)
     city_name = serializers.CharField(style={"input_type": "text"},write_only=True)
 
+class GetDocByIdSerializer(serializers.Serializer):
+    ids = serializers.ListField(child = serializers.IntegerField())
 
 class UserDetailsSerializer(serializers.Serializer):
     class Meta:
