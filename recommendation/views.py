@@ -107,8 +107,8 @@ class GetDocByIdView(generics.GenericAPIView):
         serializer = GetDocByIdSerializer(data=request.data)
         if serializer.is_valid():
             ids = serializer.validated_data['ids']
-            getDocsByIds(i.past_recom).iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
-            return Response(recom_array, status=HTTP_200_OK)
+            docs_dict = getDocsByIds(ids).iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
+            return Response(docs_dict, status=HTTP_200_OK)
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
 
