@@ -82,7 +82,7 @@ class RecommendView(generics.GenericAPIView):
             usr = User.objects.get(email=request.user)
             recom = recommend(experience, fee, city_name, 10)
             recom_ids = list(recom['id'])
-            PastRecommendations.objects.create(patient=usr,past_recom=recom_ids)
+            #PastRecommendations.objects.create(patient=usr,past_recom=recom_ids)
             recom_array = recom.iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
             return Response(recom_array, status=HTTP_200_OK)
         else:
