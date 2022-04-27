@@ -10,7 +10,7 @@ from .models import User,PastRecommendations
 from rest_framework import permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
-from .externals import getAllHospitals, recommend, getDocsByIds, getTopDocs
+from .externals import getAllDoctors, getAllHospitals, recommend, getDocsByIds, getTopDocs
 
 # Create your views here.
 
@@ -57,6 +57,13 @@ class LoginUserView(generics.GenericAPIView):
 
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
+
+class GetAllDoctorsView(generics.GenericAPIView):
+    permission_classes = ()
+    queryset = ''
+    def get(self, request, *args, **kwargs):
+        docs_dict = getAllDoctors().iloc[:,0:13].drop(['unrequired'],axis=1).to_dict('records')
+        return Response(docs_dict, status=HTTP_200_OK)
 
 class GetAllHospitalsView(generics.GenericAPIView):
     permission_classes = ()

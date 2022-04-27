@@ -14,6 +14,9 @@ contract = web3.eth.contract(address=address, abi=abi)
 
 dataset = joblib.load(BASE_DIR / 'dataset.data')
 
+def getAllDoctors():
+    return dataset
+
 def getAllHospitals():
     return dataset["Hospital"].unique()
 
