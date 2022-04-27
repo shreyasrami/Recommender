@@ -59,11 +59,13 @@ class LoginUserView(generics.GenericAPIView):
             return Response(status=HTTP_400_BAD_REQUEST)
 
 class GetAllHospitalsView(generics.GenericAPIView):
+    permission_classes = ()
     def get(self, request, *args, **kwargs):
         response = getAllHospitals()
         return Response(response,status=HTTP_200_OK)
 
 class TopDoctorsView(generics.GenericAPIView):
+    permission_classes = ()
     queryset = ''
     def get(self, request, *args, **kwargs):
         docs = getTopDocs(10)
@@ -102,7 +104,9 @@ class PastRecommendView(generics.GenericAPIView):
         return Response(res, status=HTTP_200_OK)
 
 class GetDocByIdView(generics.GenericAPIView):
+    serializer_class = GetDocByIdSerializer
     queryset = ''
+    permission_classes = ()
     def get(self, request, *args, **kwargs):
         serializer = GetDocByIdSerializer(data=request.data)
         if serializer.is_valid():
