@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import json
 from web3 import Web3
 
-url = 'https://rpc-mumbai.maticvigil.com'
+url = 'https://rpc-mumbai.matic.today'
 web3 = Web3(Web3.HTTPProvider(url))
 abi = json.loads('[{"inputs":[{"internalType":"uint256","name":"_id","type":"uint256"}],"name":"dislikeDoctor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_id","type":"uint256"}],"name":"likeDoctor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllDetails","outputs":[{"internalType":"uint256[]","name":"details","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"numOfLikes","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]')
 address = '0x0CA24955E4FE4C7842D8C3C0757625962bC1E347'
